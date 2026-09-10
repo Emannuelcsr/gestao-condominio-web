@@ -53,7 +53,7 @@ http://localhost:8080
 
 O frontend envia o token JWT nas requisições protegidas e utiliza o perfil do usuário para controlar o acesso às páginas de morador e administrador.
 
-O link para o repositório do backend será adicionado após a publicação no GitHub.
+Repositório do backend: [gestao-condominio-api](https://github.com/Emannuelcsr/gestao-condominio-api)
 
 ## Pré-requisitos
 
