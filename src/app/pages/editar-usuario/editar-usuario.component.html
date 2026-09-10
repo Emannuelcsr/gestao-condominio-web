@@ -1,0 +1,107 @@
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-edicao">
+
+  <div class="card-edicao">
+
+    <div class="cabecalho-edicao">
+      <div>
+        <h1>Editar usuário</h1>
+        <p>Atualize os dados do usuário selecionado.</p>
+      </div>
+    </div>
+
+
+    @if (carregandoUsuario) {
+
+  <div class="carregando">
+    <div class="spinner-solicitacoes"></div>
+    <span>Carregando dados do usuário...</span>
+  </div>
+
+} @else {
+    <form [formGroup]="formEditar" (ngSubmit)="salvar()">
+
+      @if (mensagemErro) {
+        <div class="alerta-erro">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      <div class="campo-formulario">
+        <label for="nome">Nome</label>
+
+        <input
+          id="nome"
+          type="text"
+          formControlName="nome"
+          placeholder="Digite o nome"
+        >
+
+        @if (
+          formEditar.controls.nome.hasError('required') &&
+          formEditar.controls.nome.touched
+        ) {
+          <p class="mensagem-campo">
+            O nome é obrigatório.
+          </p>
+        }
+      </div>
+
+      <div class="campo-formulario">
+        <label for="email">E-mail</label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Digite o e-mail"
+        >
+
+        @if (
+          formEditar.controls.email.hasError('required') &&
+          formEditar.controls.email.touched
+        ) {
+          <p class="mensagem-campo">
+            O e-mail é obrigatório.
+          </p>
+        }
+
+        @if (
+          formEditar.controls.email.hasError('email') &&
+          formEditar.controls.email.touched
+        ) {
+          <p class="mensagem-campo">
+            Informe um e-mail válido.
+          </p>
+        }
+      </div>
+
+      <div class="acoes-formulario">
+
+        <button
+          type="button"
+          class="botao-cancelar"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="botao-salvar"
+          [disabled]="salvando"
+        >
+          @if (salvando) {
+            Salvando...
+          } @else {
+            Salvar alterações
+          }
+        </button>
+
+      </div>
+    </form>
+  }
+  </div>
+
+</section>

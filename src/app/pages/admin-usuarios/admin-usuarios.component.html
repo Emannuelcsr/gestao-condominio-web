@@ -1,0 +1,159 @@
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-admin">
+
+  <div class="cabecalho-pagina">
+    <div>
+      <h1>Usuários</h1>
+      <p>Gerencie os usuários cadastrados no sistema.</p>
+    </div>
+
+    <a class="botao-novo" routerLink="/admin/novomorador">
+      + Novo morador
+    </a>
+  </div>
+
+
+  @if (mensagemErro) {
+  <div class="alerta alerta-erro">
+    <span>{{ mensagemErro }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemErro = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+
+  @if (mensagemSucesso) {
+  <div class="alerta alerta-sucesso">
+    <span>{{ mensagemSucesso }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemSucesso = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+
+  <div class="tabela-container">
+
+    @if (carregandoUsuarios) {
+
+    <div class="carregando">
+      <div class="spinner-solicitacoes"></div>
+      <span>Carregando solicitações...</span>
+    </div>
+
+    } @else {
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th class="ordenavel" (click)="ordenar('nome')">
+            Nome
+
+            @if (ordenarPor === 'nome') {
+            <span>
+              {{ direcao === 'asc' ? '↓' : '↑' }}
+            </span>
+            }
+          </th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          <th colspan="3" class="cabecalho-acoes">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (usuario of usuarios; track usuario.id) {
+
+        <tr>
+
+          <td>
+            #{{ usuario.id }}
+          </td>
+
+          <td class="nome-usuario">
+            {{ usuario.nome }}
+          </td>
+
+          <td>
+            {{ usuario.email }}
+          </td>
+
+          <td>
+            <span class="perfil" [class.perfil-admin]="usuario.perfil === 'ADMINISTRADOR'"
+              [class.perfil-morador]="usuario.perfil === 'MORADOR'">
+              {{ usuario.perfil }}
+            </span>
+          </td>
+
+
+          <td class="coluna-acao">
+            <button type="button" class="botao-historico" (click)="historico(usuario.id)">
+              Historico
+            </button>
+          </td>
+
+
+          <td class="coluna-acao">
+            <button type="button" class="botao-editar" (click)="editar(usuario.id)">
+              Editar
+            </button>
+          </td>
+
+          <td class="coluna-acao">
+            <button type="button" class="botao-excluir" (click)="deletarUsuario(usuario.id)"
+              [disabled]="usuarioEmProcessamento === usuario.id">
+              @if (usuarioEmProcessamento === usuario.id) {
+              Excluindo...
+              } @else {
+              Excluir
+              }
+            </button>
+          </td>
+
+
+
+
+        </tr>
+
+        } @empty {
+
+        <tr>
+          <td colspan="5" class="estado-vazio">
+            Nenhum usuário encontrado.
+          </td>
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+    }
+    <div class="paginacao">
+
+      <button type="button" (click)="paginaAnterior()" [disabled]="primeiraPagina">
+        ← Anterior
+      </button>
+
+      <span>
+        Página <strong>{{ paginaAtual }}</strong>
+        de <strong>{{ totalPaginas }}</strong>
+      </span>
+
+      <button type="button" (click)="proximaPagina()" [disabled]="ultimaPagina">
+        Próxima →
+      </button>
+
+    </div>
+
+  </div>
+
+</section>

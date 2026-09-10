@@ -1,0 +1,289 @@
+<app-menu-morador></app-menu-morador>
+
+<section class="pagina-solicitacoes">
+
+
+  <div class="filtros">
+
+    <div class="campo-filtro">
+      <label for="status">Status</label>
+
+      <select id="status" [value]="statusSelecionado"
+        (change)="statusSelecionado = $any($event.target).value; filtrar()">
+        <option value="">Todos os status</option>
+        <option value="ABERTA">Aberta</option>
+        <option value="EM_ANALISE">Em análise</option>
+        <option value="EM_ANDAMENTO">Em andamento</option>
+        <option value="AGUARDANDO_RESPOSTA">Aguardando resposta</option>
+        <option value="CONCLUIDA">Concluída</option>
+        <option value="CANCELADA">Cancelada</option>
+      </select>
+    </div>
+
+
+    <div class="campo-filtro">
+      <label for="categoria">Categoria</label>
+
+      <select id="categoria" [value]="categoriaSelecionada"
+        (change)="categoriaSelecionada = $any($event.target).value; filtrar()">
+        <option value="">Todas as categorias</option>
+        <option value="MANUTENCAO">Manutenção</option>
+        <option value="LIMPEZA">Limpeza</option>
+        <option value="SEGURANCA">Segurança</option>
+        <option value="BARULHO">Barulho</option>
+        <option value="ILUMINACAO">Iluminação</option>
+        <option value="VAZAMENTO">Vazamento</option>
+        <option value="ELEVADOR">Elevador</option>
+        <option value="AREA_COMUM">Área comum</option>
+        <option value="OUTROS">Outros</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="campo-filtro campo-busca">
+    <label for="tituloBusca">Título</label>
+
+    <div class="busca-titulo">
+
+      <input #tituloBusca id="tituloBusca" type="text" placeholder="Buscar por título..."
+        (keyup.enter)="tituloSelecionado = tituloBusca.value.trim(); filtrar()">
+
+      <button type="button" class="botao-buscar" (click)="tituloSelecionado = tituloBusca.value.trim(); filtrar()">
+        🔎 Buscar
+
+      </button>
+
+      <button type="button" class="botao-limpar" (click)="limparFiltros(tituloBusca)">
+        Limpar filtros
+      </button>
+
+    </div>
+  </div>
+
+
+  <header class="cabecalho">
+
+
+
+    <div>
+      <h1>Minhas Solicitações</h1>
+      <p>Acompanhe as solicitações enviadas ao condomínio.</p>
+    </div>
+
+
+
+    @if (totalElementos > 0) {
+    <div class="contador">
+      {{ totalElementos }}
+      {{ totalElementos === 1 ? 'solicitação' : 'solicitações' }}
+    </div>
+    }
+
+  </header>
+
+  @if (mensagemErro) {
+  <div class="alerta alerta-erro">
+    <span>{{ mensagemErro }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemErro = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+  @if (mensagemSucesso) {
+  <div class="alerta alerta-sucesso">
+    <span>{{ mensagemSucesso }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemSucesso = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+
+  @if (carregandoSolicitacoes) {
+
+  <div class="carregamento">
+    <div class="spinner"></div>
+    <span>Carregando solicitações...</span>
+  </div>
+
+  } @else {
+
+  <div class="campo-filtro">
+    <label for="ordenacao">Ordenar por</label>
+
+    <select class="ordenacao" id="ordenacao" [value]="ordenarPor + '|' + direcao" (change)="
+    ordenarPor = $any($event.target).value.split('|')[0];
+    direcao = $any($event.target).value.split('|')[1];
+    alterarOrdenacao()
+  ">
+      <option value="dataCriacao|desc">
+        Mais recentes
+      </option>
+
+      <option value="dataCriacao|asc">
+        Mais antigas
+      </option>
+
+      <option value="titulo|asc">
+        Título A-Z
+      </option>
+
+      <option value="titulo|desc">
+        Título Z-A
+      </option>
+    </select>
+  </div>
+
+
+  @if (solicitacoes.length === 0) {
+
+  <div class="lista-vazia">
+
+    <div class="lista-vazia-icone">
+      ✓
+    </div>
+
+    <h2>Nenhuma solicitação encontrada</h2>
+
+    <p>
+      Quando você criar uma solicitação, ela aparecerá aqui.
+    </p>
+
+  </div>
+
+  } @else {
+
+
+  <div class="lista">
+
+    @for (solicitacao of solicitacoes; track solicitacao.id) {
+
+    <article class="solicitacao" [class.solicitacao-aberta]="solicitacao.status === 'ABERTA'"
+      [class.solicitacao-concluida]="solicitacao.status === 'CONCLUIDA'">
+
+      <div class="conteudo-principal">
+
+        <div class="topo-solicitacao">
+
+          <div class="titulo-area">
+
+            <span class="numero">
+              #{{ solicitacao.id }}
+            </span>
+
+            <h2>
+              {{ solicitacao.titulo }}
+            </h2>
+
+          </div>
+
+
+          <span class="status" [class.status-aberta]="solicitacao.status === 'ABERTA'"
+            [class.status-analise]="solicitacao.status === 'EM_ANALISE'"
+            [class.status-andamento]="solicitacao.status === 'EM_ANDAMENTO'"
+            [class.status-aguardando]="solicitacao.status === 'AGUARDANDO_RESPOSTA'"
+            [class.status-concluida]="solicitacao.status === 'CONCLUIDA'"
+            [class.status-cancelada]="solicitacao.status === 'CANCELADA'">
+            {{ formatarStatus(solicitacao.status) }}
+          </span>
+
+        </div>
+
+
+        <p class="descricao">
+          {{ solicitacao.descricao }}
+        </p>
+
+
+        <div class="informacoes">
+
+          <div class="informacao">
+            <span>Categoria</span>
+
+            <strong>
+              {{ solicitacao.categoria }}
+            </strong>
+          </div>
+
+
+          <div class="separador"></div>
+
+
+          <div class="informacao">
+            <span>Criada em</span>
+
+            <strong>
+              {{ solicitacao.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      @if (solicitacao.status === 'ABERTA') {
+
+      <div class="acoes">
+
+        <button type="button" class="botao-editar" (click)="editar(solicitacao.id)">
+          Editar
+        </button>
+
+
+        <button type="button" class="botao-excluir" (click)="excluir(solicitacao.id)"
+          [disabled]="solicitacaoEmProcessamento === solicitacao.id">
+
+          @if (solicitacaoEmProcessamento === solicitacao.id) {
+          Excluindo...
+          } @else {
+          Excluir
+          }
+
+        </button>
+
+      </div>
+
+      }
+
+    </article>
+
+    }
+
+  </div>
+
+  }
+
+  }
+
+
+  @if (totalElementos > 0 && !carregandoSolicitacoes) {
+
+  <footer class="paginacao">
+
+    <button type="button" (click)="paginaAnterior()" [disabled]="primeiraPagina">
+      ← Anterior
+    </button>
+
+
+    <span>
+      Página
+      <strong>{{ paginaAtual }}</strong>
+      de
+      <strong>{{ totalPaginas }}</strong>
+    </span>
+
+
+    <button type="button" (click)="proximaPagina()" [disabled]="ultimaPagina">
+      Próxima →
+    </button>
+
+  </footer>
+
+  }
+
+</section>

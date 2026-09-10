@@ -1,0 +1,153 @@
+<app-menu-morador></app-menu-morador>
+
+<section class="pagina-edicao">
+
+  <div class="card-edicao">
+
+    <header class="cabecalho-formulario">
+      <h1>Editar solicitação</h1>
+
+      <p>
+        Atualize as informações da sua solicitação.
+      </p>
+    </header>
+
+
+    @if (mensagemErro) {
+    <div class="mensagem-erro">
+      {{ mensagemErro }}
+    </div>
+    }
+
+    @if (carregandoSolicitacao) {
+
+      <div class="carregando">
+        <div class="spinner-solicitacoes"></div>
+        <span>Carregando solicitação...</span>
+      </div>
+
+    } @else {
+
+
+    <form [formGroup]="formEditar" (ngSubmit)="salvar()">
+
+      <div class="campo">
+
+        <label for="titulo">
+          Título
+        </label>
+
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Digite um título para a solicitação">
+        @if (
+        formEditar.controls.titulo.touched &&
+        formEditar.controls.titulo.hasError('required')
+        ) {
+        <span class="erro-campo">
+          O título é obrigatório.
+        </span>
+        }
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="descricao">
+          Descrição
+        </label>
+
+        <textarea id="descricao" formControlName="descricao" rows="6"
+          placeholder="Descreva o problema ou situação com detalhes"></textarea>
+
+        @if (
+  formEditar.controls.descricao.touched &&
+  formEditar.controls.descricao.hasError('required')
+) {
+  <span class="erro-campo">
+    A descrição é obrigatória.
+  </span>
+}
+
+      </div>
+
+
+      <div class="campo">
+
+        <label for="categoria">
+          Categoria
+        </label>
+
+        <select id="categoria" formControlName="categoria">
+
+          <option value="MANUTENCAO">
+            Manutenção
+          </option>
+
+          <option value="LIMPEZA">
+            Limpeza
+          </option>
+
+          <option value="SEGURANCA">
+            Segurança
+          </option>
+
+          <option value="BARULHO">
+            Barulho
+          </option>
+
+          <option value="ILUMINACAO">
+            Iluminação
+          </option>
+
+          <option value="VAZAMENTO">
+            Vazamento
+          </option>
+
+          <option value="ELEVADOR">
+            Elevador
+          </option>
+
+          <option value="AREA_COMUM">
+            Área comum
+          </option>
+
+          <option value="OUTROS">
+            Outros
+          </option>
+
+        </select>   
+
+      </div>
+@if (
+  formEditar.controls.categoria.touched &&
+  formEditar.controls.categoria.hasError('required')
+) {
+  <span class="erro-campo">
+    A categoria é obrigatória.
+  </span>
+}
+
+      
+
+
+      <div class="acoes-formulario">
+
+        <button type="button" class="botao-cancelar" (click)="cancelar()">
+          Cancelar
+        </button>
+
+        <button type="submit" class="botao-salvar" [disabled]="salvando">
+          @if (salvando) {
+          Salvando...
+          } @else {
+          Salvar alterações
+          }
+        </button>
+
+      </div>
+
+    </form>
+  }
+  </div>
+
+</section>

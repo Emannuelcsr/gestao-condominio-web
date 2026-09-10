@@ -1,0 +1,124 @@
+<app-menu-morador></app-menu-morador>
+
+<section class="pagina-nova-solicitacao">
+
+  <div class="card-formulario">
+
+    <div class="cabecalho-formulario">
+      <h1>Nova solicitação</h1>
+
+      <p>
+        Preencha os dados abaixo para registrar uma nova solicitação.
+      </p>
+    </div>
+
+
+
+    @if (mensagemErro) {
+    <div class="alerta alerta-erro">
+      <span>{{ mensagemErro }}</span>
+
+      <button type="button" class="fechar-alerta" (click)="mensagemErro = ''" aria-label="Fechar mensagem">
+        ×
+      </button>
+    </div>
+    }
+
+    
+
+    <form [formGroup]="formNovaSolicitacao" (ngSubmit)="criar()">
+
+      <div class="campo-formulario">
+
+        <label for="titulo">
+          Título
+        </label>
+
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ex.: Vazamento no corredor">
+
+        @if (
+        formNovaSolicitacao.controls.titulo.invalid &&
+        formNovaSolicitacao.controls.titulo.touched
+        ) {
+        <small class="erro-campo">
+          Informe um título.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="campo-formulario">
+
+        <label for="descricao">
+          Descrição
+        </label>
+
+        <textarea id="descricao" formControlName="descricao" rows="6"
+          placeholder="Descreva o problema com o máximo de detalhes possível"></textarea>
+
+        @if (
+        formNovaSolicitacao.controls.descricao.invalid &&
+        formNovaSolicitacao.controls.descricao.touched
+        ) {
+        <small class="erro-campo">
+          Informe uma descrição.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="campo-formulario">
+
+        <label for="categoria">
+          Categoria
+        </label>
+
+        <select id="categoria" formControlName="categoria">
+          <option value="">Selecione uma categoria</option>
+          <option value="MANUTENCAO">Manutenção</option>
+          <option value="LIMPEZA">Limpeza</option>
+          <option value="SEGURANCA">Segurança</option>
+          <option value="BARULHO">Barulho</option>
+          <option value="ILUMINACAO">Iluminação</option>
+          <option value="VAZAMENTO">Vazamento</option>
+          <option value="ELEVADOR">Elevador</option>
+          <option value="AREA_COMUM">Área comum</option>
+          <option value="OUTROS">Outros</option>
+        </select>
+
+        @if (
+        formNovaSolicitacao.controls.categoria.invalid &&
+        formNovaSolicitacao.controls.categoria.touched
+        ) {
+        <small class="erro-campo">
+          Selecione uma categoria.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="acoes-formulario">
+
+        <button type="button" class="botao-cancelar" routerLink="/minhas-solicitacoes">
+          Cancelar
+        </button>
+
+
+        <button class="botao-salvar" type="submit" [disabled]="criando">
+          @if (criando) {
+          Criando...
+          } @else {
+          Criar solicitação
+          }
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</section>

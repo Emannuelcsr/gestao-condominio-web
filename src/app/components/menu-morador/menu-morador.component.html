@@ -1,0 +1,38 @@
+<nav class="menu-morador">
+
+  <div class="menu-links">
+
+    <a routerLink="/minhas-solicitacoes">
+      Minhas Solicitações
+    </a>
+
+    <a routerLink="/solicitacoes/nova">
+      Nova Solicitação
+    </a>
+
+  </div>
+
+
+  <div class="menu-usuario">
+
+    <div class="usuario-logado">
+      <span class="usuario-icone">👤</span>
+
+      <div>
+        <span class="usuario-texto">Bem-vindo</span>
+        <strong>{{ usuario?.nome }}</strong>
+      </div>
+    </div>
+
+
+    <button
+      type="button"
+      class="botao-sair"
+      (click)="sair()"
+    >
+      Sair
+    </button>
+
+  </div>
+
+</nav>

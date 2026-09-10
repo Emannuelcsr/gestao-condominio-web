@@ -1,0 +1,144 @@
+.menu-morador {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+
+  min-height: 68px;
+
+  background: #1f2937;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* LINKS */
+
+.menu-links {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.menu-links a {
+  padding: 10px 14px;
+
+  border-radius: 6px;
+
+  color: #e5e7eb;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: background 0.2s;
+}
+
+.menu-links a:hover {
+  background: #374151;
+  color: #ffffff;
+}
+
+
+/* USUÁRIO */
+
+.menu-usuario {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+}
+
+.usuario-logado {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+}
+
+.usuario-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: #374151;
+
+  font-size: 16px;
+}
+
+.usuario-logado div {
+  display: flex;
+  flex-direction: column;
+}
+
+.usuario-texto {
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+.usuario-logado strong {
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* SAIR */
+
+.botao-sair {
+  padding: 8px 13px;
+
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #f3f4f6;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.botao-sair:hover {
+  background: #374151;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .menu-morador {
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 12px;
+
+    padding: 14px;
+  }
+
+  .menu-links {
+    justify-content: center;
+  }
+
+  .menu-usuario {
+    justify-content: space-between;
+
+    padding-top: 10px;
+
+    border-top: 1px solid #374151;
+  }
+
+}

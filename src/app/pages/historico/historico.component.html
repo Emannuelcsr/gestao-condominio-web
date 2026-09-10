@@ -1,0 +1,228 @@
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-admin">
+
+  <div class="cabecalho-pagina">
+
+    <div>
+      <h1>Histórico de solicitações</h1>
+
+      <p>
+        Solicitações registradas por
+        <strong>{{ nomeMorador }}</strong>
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="botao-voltar"
+      (click)="voltar()"
+    >
+      ← Voltar para usuários
+    </button>
+
+  </div>
+
+
+  <div class="resumo-lista">
+    {{ totalElementos }} solicitações encontradas
+  </div>
+
+
+  <div class="tabela-container">
+
+    @if (carregando) {
+
+      <div class="carregando">
+        <div class="spinner-solicitacoes"></div>
+
+        <span>
+          Carregando solicitações...
+        </span>
+      </div>
+
+    } @else {
+
+      <table>
+
+        <thead>
+          <tr>
+
+            <th>ID</th>
+
+            <th
+              class="ordenavel"
+              (click)="ordenar('titulo')"
+            >
+              Título
+
+              @if (ordenarPor === 'titulo') {
+                <span>
+                  {{ direcao === 'asc' ? '↓' : '↑' }}
+                </span>
+              }
+            </th>
+
+
+            <th
+              class="ordenavel"
+              (click)="ordenar('status')"
+            >
+              Status
+
+              @if (ordenarPor === 'status') {
+                <span>
+                  {{ direcao === 'asc' ? '↓' : '↑' }}
+                </span>
+              }
+            </th>
+
+
+            <th
+              class="ordenavel"
+              (click)="ordenar('categoria')"
+            >
+              Categoria
+
+              @if (ordenarPor === 'categoria') {
+                <span>
+                  {{ direcao === 'asc' ? '↓' : '↑' }}
+                </span>
+              }
+            </th>
+
+
+            <th
+              class="ordenavel"
+              (click)="ordenar('dataCriacao')"
+            >
+              Data de criação
+
+              @if (ordenarPor === 'dataCriacao') {
+                <span>
+                  {{ direcao === 'asc' ? '↓' : '↑' }}
+                </span>
+              }
+            </th>
+
+            <th>Ativo</th>
+
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          @if (solicitacoes.length === 0) {
+
+            <tr>
+              <td
+                colspan="6"
+                class="sem-resultados"
+              >
+                Este morador ainda não possui solicitações registradas.
+              </td>
+            </tr>
+
+          } @else {
+
+            @for (
+              solicitacao of solicitacoes;
+              track solicitacao.id
+            ) {
+
+              <tr>
+
+                <td>
+                  #{{ solicitacao.id }}
+                </td>
+
+
+                <td>
+                  {{ solicitacao.titulo }}
+                </td>
+
+
+                <td>
+                  <span class="status-solicitacao">
+                    {{ formatarStatus(solicitacao.status) }}
+                  </span>
+                </td>
+
+
+                <td>
+                  {{ formatarCategoria(solicitacao.categoria) }}
+                </td>
+
+
+                <td>
+                  {{
+                    solicitacao.dataCriacao
+                      | date:'dd/MM/yyyy HH:mm'
+                  }}
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="status-atividade"
+                    [class.ativa]="solicitacao.ativo"
+                    [class.inativa]="!solicitacao.ativo"
+                  >
+                    {{
+                      solicitacao.ativo
+                        ? 'Ativa'
+                        : 'Inativa'
+                    }}
+                  </span>
+
+                </td>
+
+              </tr>
+
+            }
+
+          }
+
+        </tbody>
+
+      </table>
+
+    }
+
+  </div>
+
+
+  @if (totalElementos > 0) {
+
+    <div class="paginacao">
+
+      <button
+        type="button"
+        (click)="paginaAnterior()"
+        [disabled]="primeiraPagina"
+      >
+        ← Anterior
+      </button>
+
+      <span>
+        Página
+        <strong>{{ paginaAtual }}</strong>
+        de
+        <strong>{{ totalPaginas }}</strong>
+      </span>
+
+      <button
+        type="button"
+        (click)="proximaPagina()"
+        [disabled]="ultimaPagina"
+      >
+        Próxima →
+      </button>
+
+    </div>
+
+  }
+
+</section>

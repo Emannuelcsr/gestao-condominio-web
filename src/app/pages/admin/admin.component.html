@@ -1,0 +1,386 @@
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-admin">
+
+  <div class="cabecalho-pagina">
+    <div>
+      <h1>Solicitações</h1>
+      <p>Gerencie solicitações ativas e inativas do condomínio.</p>
+    </div>
+
+    <button type="button" class="botao-secundario" (click)="alternarInativas()">
+      {{ mostrarInativas ? 'Ocultar inativas' : 'Ver inativas' }}
+    </button>
+  </div>
+
+
+  <div class="area-filtros">
+
+    <div class="filtros">
+
+      <div class="campo-filtro">
+        <label for="status">Status</label>
+
+        <select id="status" [value]="statusSelecionado"
+          (change)="statusSelecionado = $any($event.target).value; filtro()">
+          <option value="">Todos</option>
+          <option value="ABERTA">Aberta</option>
+          <option value="EM_ANALISE">Em análise</option>
+          <option value="EM_ANDAMENTO">Em andamento</option>
+          <option value="AGUARDANDO_RESPOSTA">Aguardando resposta</option>
+          <option value="CONCLUIDA">Concluída</option>
+          <option value="CANCELADA">Cancelada</option>
+        </select>
+      </div>
+
+      <div class="campo-filtro">
+        <label for="categoria">Categoria</label>
+
+        <select id="categoria" [value]="categoriaSelecionada"
+          (change)="categoriaSelecionada = $any($event.target).value; filtro()">
+          <option value="">Todas</option>
+          <option value="MANUTENCAO">Manutenção</option>
+          <option value="LIMPEZA">Limpeza</option>
+          <option value="SEGURANCA">Segurança</option>
+          <option value="BARULHO">Barulho</option>
+          <option value="ILUMINACAO">Iluminação</option>
+          <option value="VAZAMENTO">Vazamento</option>
+          <option value="ELEVADOR">Elevador</option>
+          <option value="AREA_COMUM">Área comum</option>
+          <option value="OUTROS">Outros</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="busca-titulo">
+
+      <input type="text" placeholder="Buscar solicitação por título..." #tituloBusca
+        (input)="aoDigitarTitulo(tituloBusca.value)" (keyup.enter)="buscaPorTitulo(tituloBusca.value)" />
+
+      <button type="button" class="botao-buscar" (click)="buscaPorTitulo(tituloBusca.value)">
+        🔎 Buscar
+      </button>
+
+        <button type="button" class="botao-limpar" (click)="limparFiltros(tituloBusca)">
+        Limpar filtros
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="resumo-lista">
+    <span>
+      {{ totalElementos }} solicitações encontradas
+    </span>
+  </div>
+
+
+
+
+  @if (mensagemErro) {
+  <div class="alerta alerta-erro">
+    <span>{{ mensagemErro }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemErro = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+  @if (mensagemSucesso) {
+  <div class="alerta alerta-sucesso">
+    <span>{{ mensagemSucesso }}</span>
+
+    <button type="button" class="fechar-alerta" (click)="mensagemSucesso = ''" aria-label="Fechar mensagem">
+      ×
+    </button>
+  </div>
+  }
+
+
+
+  <div class="tabela-container">
+
+    @if (carregando) {
+
+    <div class="carregando">
+      <div class="spinner-solicitacoes"></div>
+      <span>Carregando solicitações...</span>
+    </div>
+
+    } @else {
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th class="ordenavel" (click)="ordenar('titulo')">
+            Título
+
+            @if (ordenarPor === 'titulo') {
+            <span>
+              {{ direcao === 'asc' ? '↓' : '↑' }}
+            </span>
+            }
+          </th>
+
+          <th class="ordenavel" (click)="ordenar('status')">
+            Status
+
+            @if (ordenarPor === 'status') {
+            <span>
+              {{ direcao === 'asc' ? '↓' : '↑' }}
+            </span>
+            }
+          </th>
+
+          <th class="ordenavel" (click)="ordenar('categoria')">
+            Categoria
+
+            @if (ordenarPor === 'categoria') {
+            <span>
+              {{ direcao === 'asc' ? '↓' : '↑' }}
+            </span>
+            }
+          </th>
+
+          <th class="ordenavel" (click)="ordenar('dataCriacao')">
+            Data de criação
+
+            @if (ordenarPor === 'dataCriacao') {
+            <span>
+              {{ direcao === 'asc' ? '↓' : '↑' }}
+            </span>
+            }
+          </th>
+          <th>Ativo</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+
+        @if (solicitacoes.length === 0) {
+
+        <tr>
+          <td colspan="6" class="sem-resultados">
+            Nenhuma solicitação encontrada com os filtros informados.
+          </td>
+        </tr>
+
+        } @else {
+
+
+
+        @for (solicitacao of solicitacoes; track solicitacao.id) {
+
+        <tr>
+
+          <td>#{{ solicitacao.id }}</td>
+
+          <td class="titulo-solicitacao">
+            <button type="button" class="link-detalhes" (click)="detalhes(solicitacao.id)">
+              {{ solicitacao.titulo }}
+            </button>
+          </td>
+
+          <td>
+            <select class="select-status" [disabled]="solicitacaoStatusEmProcessamento === solicitacao.id" [value]="solicitacao.status" (change)="alterarStatus(
+                  solicitacao,
+                  $any($event.target).value,
+                  $event
+                )">
+              <option value="ABERTA">Aberta</option>
+              <option value="EM_ANALISE">Em análise</option>
+              <option value="EM_ANDAMENTO">Em andamento</option>
+              <option value="AGUARDANDO_RESPOSTA">Aguardando resposta</option>
+              <option value="CONCLUIDA">Concluída</option>
+              <option value="CANCELADA">Cancelada</option>
+            </select>
+          </td>
+
+          <td>  {{ formatarCategoria(solicitacao.categoria) }}</td>
+
+          <td>
+            {{ solicitacao.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+
+          <td>
+            <span class="status-ativo">
+              Ativa
+            </span>
+          </td>
+
+        </tr>
+
+        }
+        }
+
+      </tbody>
+
+    </table>
+    }
+  </div>
+
+
+  @if (totalElementos > 0) {
+
+  <div class="paginacao">
+
+    <button type="button" (click)="paginaAnterior()" [disabled]="primeiraPagina">
+      ← Anterior
+    </button>
+
+    <span>
+      Página <strong>{{ paginaAtual }}</strong>
+      de <strong>{{ totalPaginas }}</strong>
+    </span>
+
+    <button type="button" (click)="proximaPagina()" [disabled]="ultimaPagina">
+      Próxima →
+    </button>
+
+  </div>
+
+  }
+
+</section>
+
+
+@if (mostrarInativas) {
+
+<section class="pagina-admin secao-inativas">
+
+  <div class="cabecalho-pagina">
+    <div>
+      <h2>Solicitações inativas</h2>
+      <p>Solicitações removidas pelo morador e disponíveis para gerenciamento.</p>
+    </div>
+  </div>
+
+  @if (carregandoInativas) {
+
+  <div class="carregando">
+    <div class="spinner-solicitacoes"></div>
+    <span>Carregando solicitações inativas...</span>
+  </div>
+
+  } @else {
+
+  @if (solicitacoesInativas.length > 0) {
+
+  <div class="tabela-container">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Status</th>
+          <th>Categoria</th>
+          <th>Data de criação</th>
+          <th colspan="2">Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        @for (
+        solicitacaoInativa of solicitacoesInativas;
+        track solicitacaoInativa.id
+        ) {
+
+        <tr>
+
+          <td>#{{ solicitacaoInativa.id }}</td>
+
+          <td class="titulo-solicitacao">
+            <button type="button" class="link-detalhes" (click)="detalhes(solicitacaoInativa.id)">
+              {{ solicitacaoInativa.titulo }}
+            </button>
+          </td>
+
+          <td>
+            {{ solicitacaoInativa.status }}
+          </td>
+
+          <td>
+            {{ solicitacaoInativa.categoria }}
+          </td>
+
+          <td>
+            {{ solicitacaoInativa.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+
+          <td>
+            <button type="button" class="botao-reativar" (click)="reativar(solicitacaoInativa.id)"
+              [disabled]="solicitacaoEmProcessamento === solicitacaoInativa.id">
+              @if (solicitacaoEmProcessamento === solicitacaoInativa.id) {
+              Reativando...
+              } @else {
+              Reativar
+              }
+            </button>
+          </td>
+
+          <td>
+<button
+  type="button"
+  class="botao-excluir"
+  (click)="excluirDefinitivamente(solicitacaoInativa.id)"
+  [disabled]="solicitacaoEmProcessamento === solicitacaoInativa.id"
+>
+  @if (solicitacaoEmProcessamento === solicitacaoInativa.id) {
+    Excluindo...
+  } @else {
+    Excluir
+  }
+</button>
+          </td>
+
+        </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div class="paginacao">
+
+    <button type="button" (click)="paginaAnteriorInativa()" [disabled]="primeiraPaginaInativa">
+      ← Anterior
+    </button>
+
+    <span>
+      Página <strong>{{ paginaAtualInativa }}</strong>
+      de <strong>{{ totalPaginasInativa }}</strong>
+    </span>
+
+    <button type="button" (click)="proximaPaginaInativa()" [disabled]="ultimaPaginaInativa">
+      Próxima →
+    </button>
+
+  </div>
+
+  } @else {
+
+  <div class="estado-vazio">
+    Nenhuma solicitação inativa encontrada.
+  </div>
+
+  }
+
+  }
+
+</section>
+
+}

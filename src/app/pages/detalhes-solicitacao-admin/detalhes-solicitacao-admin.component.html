@@ -1,0 +1,162 @@
+
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-detalhes">
+
+  <div class="cabecalho-detalhes">
+
+    <div>
+      <span class="identificador">
+        Solicitação #{{ solicitacoes.id }}
+      </span>
+
+      <h1>
+        {{ solicitacoes.titulo }}
+      </h1>
+
+      <p>
+        Visualize todas as informações registradas para esta solicitação.
+      </p>
+    </div>
+
+    <span
+      class="badge-status"
+      [class.status-aberta]="solicitacoes.status === 'ABERTA'"
+      [class.status-analise]="solicitacoes.status === 'EM_ANALISE'"
+      [class.status-andamento]="solicitacoes.status === 'EM_ANDAMENTO'"
+      [class.status-aguardando]="solicitacoes.status === 'AGUARDANDO_RESPOSTA'"
+      [class.status-concluida]="solicitacoes.status === 'CONCLUIDA'"
+      [class.status-cancelada]="solicitacoes.status === 'CANCELADA'"
+    >
+      {{ solicitacoes.status }}
+    </span>
+
+  </div>
+
+
+  <div class="grid-detalhes">
+
+    <article class="card-detalhes card-principal">
+
+      <div class="titulo-card">
+        <h2>Informações da solicitação</h2>
+      </div>
+
+      <div class="informacoes-grid">
+
+        <div class="informacao">
+          <span>Categoria</span>
+          <strong>{{ solicitacoes.categoria }}</strong>
+        </div>
+
+        <div class="informacao">
+          <span>Status</span>
+          <strong>{{ solicitacoes.status }}</strong>
+        </div>
+
+        <div class="informacao">
+          <span>Data de criação</span>
+          <strong>
+            {{ solicitacoes.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+          </strong>
+        </div>
+
+        <div class="informacao">
+          <span>Última atualização</span>
+          <strong>
+            {{ solicitacoes.dataAtualizacao | date:'dd/MM/yyyy HH:mm' }}
+          </strong>
+        </div>
+
+        <div class="informacao">
+          <span>Data de conclusão</span>
+
+          @if (solicitacoes.dataConclusao) {
+            <strong>
+              {{ solicitacoes.dataConclusao | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          } @else {
+            <strong>Não concluída</strong>
+          }
+        </div>
+
+        <div class="informacao">
+          <span>Situação</span>
+
+          @if (solicitacoes.ativo) {
+            <strong class="texto-ativo">
+              Ativa
+            </strong>
+          } @else {
+            <strong class="texto-inativo">
+              Inativa
+            </strong>
+          }
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article class="card-detalhes">
+
+      <div class="titulo-card">
+        <h2>Descrição</h2>
+      </div>
+
+      <div class="descricao">
+        {{ solicitacoes.descricao }}
+      </div>
+
+    </article>
+
+      @if (solicitacoes.usuario) {
+
+      <article class="card-detalhes">
+
+        <div class="titulo-card">
+          <h2>Morador</h2>
+        </div>
+
+        <div class="informacoes-grid">
+
+          <div class="informacao">
+            <span>Nome</span>
+            <strong>
+              {{ solicitacoes.usuario.nome }}
+            </strong>
+          </div>
+
+          <div class="informacao">
+            <span>E-mail</span>
+            <strong>
+              {{ solicitacoes.usuario.email }}
+            </strong>
+          </div>
+
+        </div>
+
+      </article>
+
+    }
+ 
+
+
+
+
+    <div class="acoes-pagina">
+
+      <button
+        type="button"
+        class="botao-voltar"
+        routerLink="/admin"
+      >
+        ← Voltar para solicitações
+      </button>
+
+    </div>
+
+  </div>
+
+</section>

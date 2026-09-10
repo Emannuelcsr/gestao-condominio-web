@@ -1,59 +1,168 @@
-# GestaoCondominioFront
+# Sistema de Gestão de Condomínio — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.25.
+Interface web desenvolvida em Angular para o Sistema de Gestão de Condomínio.
 
-## Development server
+A aplicação permite que moradores criem e acompanhem solicitações, enquanto administradores gerenciam usuários, solicitações, filtros, status e históricos.
 
-To start a local development server, run:
+## Funcionalidades
 
-```bash
-ng serve
+### Morador
+
+- Criar uma conta e realizar login
+- Consultar e atualizar o próprio cadastro
+- Criar solicitações
+- Consultar as próprias solicitações
+- Visualizar os detalhes de uma solicitação
+- Filtrar solicitações por status, categoria e título
+- Atualizar solicitações enquanto estiverem abertas
+- Desativar solicitações próprias
+
+### Administrador
+
+- Consultar usuários cadastrados
+- Consultar e filtrar solicitações
+- Atualizar o status das solicitações
+- Visualizar solicitações inativas
+- Reativar solicitações
+- Excluir permanentemente solicitações inativas
+- Consultar o histórico dos moradores
+
+## Tecnologias utilizadas
+
+- Angular 19
+- TypeScript
+- Angular Router
+- Reactive Forms
+- HttpClient
+- RxJS
+- JWT Decode
+- HTML
+- CSS
+- Nginx
+- Docker
+
+## Integração com o backend
+
+O frontend consome uma API REST desenvolvida com Java e Spring Boot.
+
+Para utilizar todas as funcionalidades, o backend deve estar disponível em:
+
+```text
+http://localhost:8080
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O frontend envia o token JWT nas requisições protegidas e utiliza o perfil do usuário para controlar o acesso às páginas de morador e administrador.
 
-## Code scaffolding
+O link para o repositório do backend será adicionado após a publicação no GitHub.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Pré-requisitos
 
-```bash
-ng generate component component-name
+Para executar o projeto localmente, é necessário ter instalado:
+
+- Node.js 18 ou superior
+- npm
+- Angular CLI 19
+- Git
+
+## Instalação
+
+Na raiz do projeto, instale as dependências:
+
+```powershell
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Executar em desenvolvimento
 
-```bash
-ng generate --help
+Inicie o servidor de desenvolvimento:
+
+```powershell
+npm start
 ```
 
-## Building
+A aplicação ficará disponível em:
 
-To build the project run:
-
-```bash
-ng build
+```text
+http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Durante o desenvolvimento, as alterações feitas nos arquivos são recarregadas automaticamente.
 
-## Running unit tests
+## Gerar build de produção
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Execute:
 
-```bash
-ng test
+```powershell
+npm run build
 ```
 
-## Running end-to-end tests
+Os arquivos compilados serão gerados em:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```text
+dist/gestao-condominio-front/browser
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Executar com Docker
 
-## Additional Resources
+Construa a imagem:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```powershell
+docker build -t gestao-condominio-front:1.0 .
+```
+
+Inicie o container:
+
+```powershell
+docker run -d `
+  --name gestao-condominio-front `
+  -p 4200:80 `
+  gestao-condominio-front:1.0
+```
+
+Acesse:
+
+```text
+http://localhost:4200
+```
+
+Para parar o container:
+
+```powershell
+docker stop gestao-condominio-front
+```
+
+Para remover o container depois de pará-lo:
+
+```powershell
+docker rm gestao-condominio-front
+```
+
+## Autenticação e autorização
+
+A aplicação trabalha com dois perfis:
+
+- `MORADOR`
+- `ADMINISTRADOR`
+
+Após o login, o token JWT é utilizado para autenticar as requisições enviadas ao backend.
+
+As rotas e funcionalidades exibidas são controladas de acordo com o perfil autenticado.
+
+## Tratamento da interface
+
+A aplicação possui tratamento para:
+
+- carregamento de dados;
+- listas vazias;
+- mensagens de erro da API;
+- validação de formulários;
+- filtros combinados;
+- paginação;
+- navegação entre lista e detalhes.
+
+## Autor
+
+**Emannuel Souza**
+
+- [LinkedIn](https://www.linkedin.com/in/emannuel-souza-88132a208/)
+- [GitHub](https://github.com/Emannuelcsr)

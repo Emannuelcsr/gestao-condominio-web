@@ -1,0 +1,84 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+
+.pagina-404 {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.conteudo-404 {
+  max-width: 520px;
+
+  text-align: center;
+}
+
+.codigo-erro {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #2563eb;
+
+  font-size: 90px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.conteudo-404 h1 {
+  margin: 0 0 12px;
+
+  color: #1f2937;
+
+  font-size: 28px;
+}
+
+.conteudo-404 p {
+  margin: 0 0 26px;
+
+  color: #6b7280;
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.conteudo-404 a {
+  display: inline-block;
+
+  padding: 10px 18px;
+
+  border-radius: 7px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: background 0.2s;
+}
+
+.conteudo-404 a:hover {
+  background: #1d4ed8;
+}
+
+@media (max-width: 600px) {
+
+  .codigo-erro {
+    font-size: 70px;
+  }
+
+  .conteudo-404 h1 {
+    font-size: 23px;
+  }
+
+}

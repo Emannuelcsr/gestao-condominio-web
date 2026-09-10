@@ -1,0 +1,120 @@
+<app-menu-admin></app-menu-admin>
+
+<section class="pagina-novo-morador">
+
+  <div class="card-formulario">
+
+    <div class="cabecalho-formulario">
+      <h1>Novo morador</h1>
+
+      <p>
+        Cadastre um novo morador para acessar o sistema.
+      </p>
+    </div>
+
+    @if (mensagemErro) {
+    <div class="alerta alerta-erro">
+      <span>{{ mensagemErro }}</span>
+
+      <button type="button" class="fechar-alerta" (click)="mensagemErro = ''" aria-label="Fechar mensagem">
+        ×
+      </button>
+    </div>
+    }
+
+    <form [formGroup]="formNovoMorador" (ngSubmit)="criar()">
+
+      <div class="campo-formulario">
+
+        <label for="nome">
+          Nome
+        </label>
+
+        <input id="nome" type="text" formControlName="nome" placeholder="Digite o nome do morador">
+
+        @if (
+        formNovoMorador.controls.nome.invalid &&
+        formNovoMorador.controls.nome.touched
+        ) {
+        <small class="erro-campo">
+          O nome é obrigatório.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="campo-formulario">
+
+        <label for="email">
+          E-mail
+        </label>
+
+        <input id="email" type="email" formControlName="email" placeholder="morador@email.com">
+
+        @if (
+        formNovoMorador.controls.email.hasError('required') &&
+        formNovoMorador.controls.email.touched
+        ) {
+        <small class="erro-campo">
+          O e-mail é obrigatório.
+        </small>
+        }
+
+        @if (
+        formNovoMorador.controls.email.hasError('email') &&
+        formNovoMorador.controls.email.touched
+        ) {
+        <small class="erro-campo">
+          Informe um e-mail válido.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="campo-formulario">
+
+        <label for="senha">
+          Senha
+        </label>
+
+        <input id="senha" type="password" formControlName="senha" placeholder="Digite uma senha">
+
+        @if (
+        formNovoMorador.controls.senha.invalid &&
+        formNovoMorador.controls.senha.touched
+        ) {
+        <small class="erro-campo">
+          A senha é obrigatória.
+        </small>
+        }
+
+      </div>
+
+
+      <div class="acoes-formulario">
+
+        <button type="button" class="botao-cancelar" routerLink="/admin/usuarios">
+          Cancelar
+        </button>
+
+<button
+  type="submit"
+  class="botao-cadastrar"
+  [disabled]="salvando"
+>
+  @if (salvando) {
+    Cadastrando...
+  } @else {
+    Cadastrar morador
+  }
+</button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</section>

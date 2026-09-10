@@ -1,0 +1,53 @@
+<nav class="menu-admin">
+
+  <div class="menu-links">
+
+    <a routerLink="/admin">
+      Solicitações
+    </a>
+
+    <a routerLink="/admin/usuarios">
+      Usuários
+    </a>
+
+    <a routerLink="/admin/novomorador">
+      Novo Morador
+    </a>
+
+  </div>
+
+
+  <div class="menu-usuario">
+
+    <div class="usuario-logado">
+
+      <div class="avatar">
+        {{ usuario?.nome?.charAt(0) }}
+      </div>
+
+      <div class="dados-usuario">
+
+        <strong>
+          {{ usuario?.nome }}
+        </strong>
+
+        <span>
+          Administrador
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="botao-sair"
+      (click)="sair()"
+    >
+      Sair
+    </button>
+
+  </div>
+
+</nav>
