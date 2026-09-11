@@ -4,6 +4,26 @@ Interface web desenvolvida em Angular para o Sistema de Gestão de Condomínio.
 
 A aplicação permite que moradores criem e acompanhem solicitações, enquanto administradores gerenciam usuários, solicitações, filtros, status e históricos.
 
+## Demonstração
+
+### Tela de login
+
+![Tela de login do Sistema de Gestão de Condomínio](docs/images/tela-login.png)
+
+### Gerenciamento de usuários
+
+![Gerenciamento de usuários pelo administrador](docs/images/admin-usuarios.png)
+
+### Solicitações do morador
+
+![Lista de solicitações do morador](docs/images/minhas-solicitacoes.png)
+
+### Gerenciamento de solicitações
+
+![Gerenciamento de solicitações pelo administrador](docs/images/admin-solicitacoes.png)
+
+
+
 ## Funcionalidades
 
 ### Morador
