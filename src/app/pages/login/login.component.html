@@ -66,18 +66,17 @@
         </div>
       }
 
-      <button
-        type="submit"
-        class="botao-entrar"
-        [disabled]="entrando"
-        @if(entrando){
-          Entrando...
-        }@else {
-          Entrar
-        }
-      >
-        Entrar
-      </button>
+<button
+  type="submit"
+  class="botao-entrar"
+  [disabled]="entrando"
+>
+  @if (entrando) {
+    Entrando...
+  } @else {
+    Entrar
+  }
+</button>
 
     </form>
 
